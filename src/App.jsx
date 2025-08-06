@@ -3,23 +3,23 @@ import './App.scss';
 import { MoviesList } from './components/MoviesList';
 import moviesFromServer from './api/movies.json';
 
+const getPrepareMovies = (movies, selectedMovies) => {
+  let preparedMovies = [...movies];
+
+  if (selectedMovies) {
+    preparedMovies = preparedMovies.filter(good => {
+      const setFormat = element =>
+        element.toLowerCase().includes(selectedMovies.toLowerCase().trim());
+
+      return setFormat(good.description) || setFormat(good.title);
+    });
+  }
+
+  return preparedMovies;
+};
+
 export const App = () => {
-  const getPrepareMovies = (movies, selectedMovies) => {
-    let preparedMovies = [...movies];
-
-    if (selectedMovies) {
-      preparedMovies = preparedMovies.filter(good => {
-        const setFormat = element =>
-          element.toLowerCase().includes(selectedMovies.toLowerCase().trim());
-
-        return setFormat(good.description) || setFormat(good.title);
-      });
-    }
-
-    return preparedMovies;
-  };
-
-  const [query, setQuery] = useState(false);
+  const [query, setQuery] = useState('');
   const visibleMovies = getPrepareMovies(moviesFromServer, query);
 
   return (
